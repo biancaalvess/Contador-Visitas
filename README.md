@@ -49,9 +49,7 @@ Exemplo:
 visitas_hoje = contar_visitas_hoje()
 print(formatar_numero(visitas_hoje))  # Exemplo: "1.2K"
 
-
-
----------------------------------------------------------------------------
+-
 
 # Portfolio Visitor Counter
 
