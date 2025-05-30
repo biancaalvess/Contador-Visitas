@@ -1,4 +1,4 @@
-# Contador de Visitas para Portfólio
+# Contador de Visitas 
 
 Este projeto implementa um sistema simples de contador de visitas para um site ou portfólio, utilizando Python para backend (armazenando visitas em arquivo JSON) e React para frontend, exibindo o número formatado e estilizado de visitas.
 
@@ -45,7 +45,7 @@ Exemplo:
 
 ----------------------------------------------------------------------
 
-# Portfolio Visitor Counter
+# Visitor Counter
 
 This project implements a simple visitor counter system for a website or portfolio, using Python for the backend (storing visits in a JSON file) and React for the frontend, displaying the formatted and stylized number of visits.
 
