@@ -258,6 +258,13 @@ def status_api():
 
 # Executa o servidor Flask
 if __name__ == '__main__':
+    import os
+    
+    # Configurações para deploy
+    port = int(os.environ.get('PORT', 5000))
+    host = os.environ.get('HOST', '0.0.0.0')
+    debug = os.environ.get('DEBUG', 'True').lower() == 'true'
+    
     print(" Iniciando API do contador de visitas...")
     print(" Endpoints disponíveis:")
     print("   - GET  / (info da API)")
@@ -266,5 +273,6 @@ if __name__ == '__main__':
     print("   - GET  /api/visitas/hoje")
     print("   - GET  /api/visitas/todas")
     print("   - GET  /api/status")
-    print(" API rodando em: http://localhost:5000")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    print(f" API rodando em: http://{host}:{port}")
+    
+    app.run(debug=debug, host=host, port=port)
