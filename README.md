@@ -1,6 +1,6 @@
-# Contador de Visitas 
+# API Contador de Visitas
 
-Este projeto implementa um sistema completo de contador de visitas em tempo real para sites ou portfólios, utilizando Flask para o backend e uma interface web responsiva com atualizações automáticas.
+API RESTful para contagem e registro de visitas, ideal para integração em portfólios, websites e aplicações que necessitam de monitoramento de visitantes.
 
 Extensão do projeto : [Notifica-Site](https://github.com/biancaalvess/Notifica-Site)
 
@@ -8,29 +8,51 @@ Extensão do projeto : [Notifica-Site](https://github.com/biancaalvess/Notifica-
 
 ##  Funcionalidades
 
--  **Atualização em tempo real** - Contadores atualizam automaticamente a cada 5 segundos
+-  **API RESTful** - Endpoints organizados e documentados
 -  **Múltiplas estatísticas** - Total de visitas e visitas do dia atual
--  **Interface moderna** - Design responsivo com efeitos visuais
--  **Mobile-friendly** - Funciona perfeitamente em dispositivos móveis
--  **Performance** - Sistema otimizado com threads e locks para concorrência
--  **Persistência** - Dados salvos em arquivo JSON local
+-  **Thread-safe** - Sistema seguro para múltiplos acessos simultâneos
+-  **Performance** - Otimizado com locks para concorrência
+-  **Persistência JSON** - Dados salvos localmente em formato JSON
+-  **CORS habilitado** - Permite integração com qualquer frontend
+-  **Formatação inteligente** - Números compactos (1.2K, 17.4M, etc.)
 
 ## Como funciona
 
-**Backend Flask** - Servidor web completo que registra cada visita automaticamente, salvando IP, user-agent e timestamp em JSON. Possui endpoints RESTful para buscar estatísticas e registrar visitas.
+**API Flask** - Servidor web que fornece endpoints para registrar visitas e obter estatísticas. Salva automaticamente IP, user-agent e timestamp de cada visita em arquivo JSON.
 
-**Frontend Responsivo** - Interface web moderna que se conecta automaticamente ao backend, exibe contadores formatados (1.2K, 17.4M) e atualiza em tempo real com indicadores visuais de status.
+**Integração flexível** - Pode ser consumida por qualquer frontend (React, Vue, Angular, vanilla JS) ou aplicação que precise de contagem de visitas.
 
-Exemplo:
-            <div className="mt-12 text-center">
-              <div className="inline-flex items-center gap-3 bg-background/80 backdrop-blur-sm border border-primary/30 rounded-full px-6 py-3 shadow-lg">
-                <div className="w-3 h-3 rounded-full bg-blue-500 animate-pulse"></div>
-                <span className="text-sm font-medium text-muted-foreground">
-                  {visitorCount !== null ? `${formatarNumero(visitorCount)} visitas` : "Carregando visitas..."}
-                </span>
-              </div>
-            </div>
-          </div>
+##  Exemplos de uso
+
+### JavaScript Frontend
+```javascript
+// Registrar uma visita
+await fetch('http://localhost:5000/api/visitas/registrar', {
+    method: 'POST'
+});
+
+// Obter total de visitas (número real)
+const response = await fetch('http://localhost:5000/api/visitas/total');
+const data = await response.json();
+console.log(`Total: ${data.visitas}`); // Ex: "1234567"
+
+// Obter total de visitas (formato compacto)
+const responseCompacto = await fetch('http://localhost:5000/api/visitas/total?formato=compacto');
+const dataCompacto = await responseCompacto.json();
+console.log(`Total: ${dataCompacto.visitas}`); // Ex: "1.2M"
+```
+
+### React Hook
+```jsx
+const [visitas, setVisitas] = useState(null);
+const [formato, setFormato] = useState('real'); // 'real' ou 'compacto'
+
+useEffect(() => {
+    fetch(`/api/visitas/total?formato=${formato}`)
+        .then(res => res.json())
+        .then(data => setVisitas(data.visitas));
+}, [formato]);
+```
 
 
 
@@ -53,10 +75,23 @@ pip install -r requirements.txt
 python app.py
 ```
 
-### Acesso
-- **Interface Web**: http://localhost:5000
-- **API Total**: http://localhost:5000/api/visitas/total
-- **API Hoje**: http://localhost:5000/api/visitas/hoje
+### Endpoints da API
+- **Info da API**: `GET /` - Informações gerais da API
+- **Registrar visita**: `POST /api/visitas/registrar` - Registra nova visita
+- **Total de visitas**: `GET /api/visitas/total` - Retorna total (real ou formatado)
+- **Visitas hoje**: `GET /api/visitas/hoje` - Retorna visitas do dia (real ou formatado)
+- **Todas as visitas**: `GET /api/visitas/todas` - Lista completa (debug)
+- **Status da API**: `GET /api/status` - Status e estatísticas gerais
+
+### Parâmetro de Formato
+Todos os endpoints que retornam números suportam o parâmetro `formato`:
+
+| Parâmetro | Descrição | Exemplo |
+|-----------|-----------|---------|
+| `?formato=real` | Número real completo | `1234567` |
+| `?formato=compacto` | Número formatado | `1.2M` |
+
+**Padrão**: `real` (sempre retorna número completo se não especificado)
 
 ##  Arquitetura
 
@@ -68,13 +103,14 @@ python app.py
 - **Detecção de IP** considerando proxies
 - **Formatação inteligente** de números (1.2K, 17.4M, etc.)
 
-### Endpoints da API
+### Endpoints disponíveis
 
-- `GET /` - Interface web principal
+- `GET /` - Informações da API
 - `POST /api/visitas/registrar` - Registra nova visita
 - `GET /api/visitas/total` - Retorna total de visitas
 - `GET /api/visitas/hoje` - Retorna visitas do dia atual
 - `GET /api/visitas/todas` - Lista todas as visitas (debug)
+- `GET /api/status` - Status e estatísticas da API
 
 ### Funções principais
 
