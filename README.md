@@ -1,16 +1,25 @@
 # Contador de Visitas para Portfólio
 
-Este projeto implementa um sistema simples de contador de visitas para um site ou portfólio, utilizando Python para backend (armazenando visitas em arquivo JSON) e React para frontend, exibindo o número formatado e estilizado de visitas.
+Este projeto implementa um sistema completo de contador de visitas em tempo real para sites ou portfólios, utilizando Flask para o backend e uma interface web responsiva com atualizações automáticas.
 
 Extensão do projeto : [Notifica-Site](https://github.com/biancaalvess/Notifica-Site)
 
 ---
 
+##  Funcionalidades
+
+-  **Atualização em tempo real** - Contadores atualizam automaticamente a cada 5 segundos
+-  **Múltiplas estatísticas** - Total de visitas e visitas do dia atual
+-  **Interface moderna** - Design responsivo com efeitos visuais
+-  **Mobile-friendly** - Funciona perfeitamente em dispositivos móveis
+-  **Performance** - Sistema otimizado com threads e locks para concorrência
+-  **Persistência** - Dados salvos em arquivo JSON local
+
 ## Como funciona
 
-Backend - Um script Python registra cada visita, salvando informações como o IP, user-agent e horário em um arquivo JSON. Ele também tem funções para contar quantas visitas aconteceram no dia atual e para formatar esse número de forma compacta (tipo 1.2K para 1.200).
+**Backend Flask** - Servidor web completo que registra cada visita automaticamente, salvando IP, user-agent e timestamp em JSON. Possui endpoints RESTful para buscar estatísticas e registrar visitas.
 
-Frontend - No React, o número de visitas é buscado via uma chamada para o backend (um endpoint que retorna o total de visitas do dia). Enquanto carrega, o componente mostra uma mensagem, e depois exibe o número formatado dentro de uma caixa estilizada, com uma bolinha animada para dar aquele toque de vida.
+**Frontend Responsivo** - Interface web moderna que se conecta automaticamente ao backend, exibe contadores formatados (1.2K, 17.4M) e atualiza em tempo real com indicadores visuais de status.
 
 Exemplo:
             <div className="mt-12 text-center">
@@ -25,23 +34,56 @@ Exemplo:
 
 
 
-## Backend (Python)
+##  Instalação e Uso
 
-### Arquivo principal: `contador_visitas.py`
+### Pré-requisitos
+- Python 3.7+
+- pip (gerenciador de pacotes Python)
 
-- Armazena as visitas em um arquivo JSON chamado `visitas.json`.
-- Utiliza travas (`Lock`) para evitar problemas de concorrência ao acessar o arquivo.
-- Registra IP, User-Agent e horário da visita.
-- Permite contar as visitas feitas no dia atual.
-- Possui função para formatar o número de visitas em formato compacto (ex: 1.2K, 17.4M).
+### Instalação
+```bash
+# Clone o repositório
+git clone <url-do-repositorio>
+cd Contador-Visitas
+
+# Instale as dependências
+pip install -r requirements.txt
+
+# Execute o servidor
+python app.py
+```
+
+### Acesso
+- **Interface Web**: http://localhost:5000
+- **API Total**: http://localhost:5000/api/visitas/total
+- **API Hoje**: http://localhost:5000/api/visitas/hoje
+
+##  Arquitetura
+
+### Backend Flask (`app.py`)
+
+- **Servidor web completo** com endpoints RESTful
+- **Armazenamento JSON** em `visitas.json`
+- **Thread-safe** com locks para concorrência
+- **Detecção de IP** considerando proxies
+- **Formatação inteligente** de números (1.2K, 17.4M, etc.)
+
+### Endpoints da API
+
+- `GET /` - Interface web principal
+- `POST /api/visitas/registrar` - Registra nova visita
+- `GET /api/visitas/total` - Retorna total de visitas
+- `GET /api/visitas/hoje` - Retorna visitas do dia atual
+- `GET /api/visitas/todas` - Lista todas as visitas (debug)
 
 ### Funções principais
 
-- `carregar_visitas()`: lê o arquivo JSON e retorna a lista de visitas.
-- `salvar_visitas(visitas)`: grava a lista de visitas no arquivo JSON.
-- `adicionar_visita(ip, user_agent)`: adiciona uma nova visita.
-- `contar_visitas_hoje()`: conta quantas visitas ocorreram hoje.
-- `formatar_numero(n)`: formata um número inteiro para formato compacto com sufixos (K, M, G).
+- `carregar_visitas()`: lê o arquivo JSON e retorna a lista de visitas
+- `salvar_visitas(visitas)`: grava a lista de visitas no arquivo JSON
+- `adicionar_visita(ip, user_agent)`: adiciona uma nova visita
+- `contar_visitas_hoje()`: conta quantas visitas ocorreram hoje
+- `contar_total_visitas()`: conta o total de visitas registradas
+- `formatar_numero(n)`: formata números para formato compacto (K, M, G)
 
 ----------------------------------------------------------------------
 
