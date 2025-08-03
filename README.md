@@ -1,4 +1,4 @@
-# Contador de Visitas para Portfólio
+# Contador de Visitas 
 
 Este projeto implementa um sistema completo de contador de visitas em tempo real para sites ou portfólios, utilizando Flask para o backend e uma interface web responsiva com atualizações automáticas.
 
@@ -87,7 +87,7 @@ python app.py
 
 ----------------------------------------------------------------------
 
-# Portfolio Visitor Counter
+# Visitor Counter
 
 This project implements a simple visitor counter system for a website or portfolio, using Python for the backend (storing visits in a JSON file) and React for the frontend, displaying the formatted and stylized number of visits.
 
